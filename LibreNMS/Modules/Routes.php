@@ -109,17 +109,8 @@ class Routes implements Module
                 return null;
             }
 
-            if ($prefix == '' && $dstType == 'ipv4') { //Computing Classfull Netmask
-                $tmp = explode('.', $dst);
-                if ($tmp[0] < 128) {
-                    $prefix = '255.0.0.0';
-                }
-                if ($tmp[0] > 128 && $tmp[0] < 192) {
-                    $prefix = '255.255.0.0';
-                }
-                if ($tmp[0] > 192 && $tmp[0] < 224) {
-                    $prefix = '255.255.255.0';
-                }
+            if ($prefix == '' && $dstType == 'ipv4') {
+                $prefix = IPv4::classfullNetmaskFromRfc($dst);
                 Log::info('Classfull netmask from RFC: ' . $dst . ' - ' . $hop . ' - ' . $prefix);
             }
 
@@ -166,7 +157,11 @@ class Routes implements Module
 
         ModuleModelObserver::observe(Route::class);
 
-        $routesExisting = $os->getDevice()->routes()->get();
+        $routesExisting = $os->getDevice()->routes()->get()->transform(function ($row) {
+            unset($row->route_id);
+
+            return $row;
+        });
         $this->syncModels($os->getDevice(), 'routes', $this->fillNew($routesExisting, $routes));
         // We add (or update) routes, but old ones are kept for history
         // Cleaning is done in `daily`.
