@@ -41,7 +41,7 @@
     <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/select2-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/query-builder.default.min.css') }}" rel="stylesheet">
-    <link href="{{ asset(LibrenmsConfig::get('stylesheet', 'css/styles.css')) }}?ver=16042501" rel="stylesheet">
+    <link href="{{ asset(LibrenmsConfig::get('stylesheet', 'css/styles.css')) }}?ver=25052501" rel="stylesheet">
     <link href="{{ asset('css/tw_dark.css?ver=03052025') }}" rel="stylesheet">
     @if(!in_array(session('applied_site_style', 'light'), ['light', 'dark']))
     <link href="{{ asset('css/' . session('applied_site_style') . '.css?ver=732417643') }}" rel="stylesheet">
@@ -113,7 +113,7 @@
 @if(Auth::check())
     <script>
         // only update resolution if it doesn't match what is stored in the session
-        if (document.documentElement.clientWidth !== {{ session('screen_width') }} || document.documentElement.clientHeight !== {{ session('screen_height') }}) {
+        if (document.documentElement.clientWidth !== {{ (int) session('screen_width') }} || document.documentElement.clientHeight !== {{ (int) session('screen_height') }}) {
             updateResolution(false);
         }
     </script>
