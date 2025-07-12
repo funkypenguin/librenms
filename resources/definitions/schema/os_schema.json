@@ -45,7 +45,13 @@
                     "snmpwalk": {"$ref": "#/$defs/snmpget"}
                 },
                 "minProperties": 1,
-                "additionalProperties": false
+                "additionalProperties": false,
+                "anyOf": [
+                    {"required": ["sysObjectID"]},
+                    {"required": ["sysObjectID_regex"]},
+                    {"required": ["sysDescr"]},
+                    {"required": ["sysDescr_regex"]}
+                ]
             }
         },
         "group": {
@@ -205,6 +211,15 @@
                     "type": "boolean"
                 },
                 "xdsl": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "polling": {
+            "type": "object",
+            "properties": {
+                "selected_ports": {
                     "type": "boolean"
                 }
             },
